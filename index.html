@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<!-- 
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  WEB ROMANTICA PARA MI NOVIA - VERSION MEJORADA              ║
+  ║  Regalo especial - Hecho con todo mi amor                    ║
+  ╚══════════════════════════════════════════════════════════════╝
+
+  ESTRUCTURA DE ARCHIVOS:
+  ├── index.html    (Este archivo - estructura de la pagina)
+  ├── styles.css    (Diseno visual, colores, animaciones)
+  ├── script.js     (Interactividad, musica, efectos)
+  └── /images/      (Carpeta para tus fotos)
+    └── /audio/       (Carpeta para tus canciones)
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--MODIFICAR AQUI: Cambia el titulo que aparece en la pestana del navegador -->
+    <title>Para Ti, Mi Amor</title>
+    <!-- Conexion con el archivo de estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Fuentes de Google: Great Vibes (elegante/cursiva) y Poppins (moderna/legible) -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Iconos para los botones y decoraciones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<base target="_blank">
+</head>
+<body>
+    <div id="lluvia-corazones" class="lluvia-corazones"></div>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 1: PANTALLA DE BIENVENIDA + SELECTOR DE MUSICA       -->
+    <!-- ============================================================ -->
+    <section id="bienvenida" class="pantalla-bienvenida">
+        <div class="bienvenida-contenido">
+            <!-- Corazones animados de fondo -->
+            <div class="corazones-flotantes" id="corazones-container"></div>
+
+            <!-- Titulo principal de bienvenida -->
+            <h1 class="titulo-bienvenida">Bienvenida, Mi Amor</h1>
+            <p class="subtitulo-bienvenida">Tengo algo muy especial preparado para ti...</p>
+
+            <!-- MODIFICAR AQUI: Selector de canciones -->
+            <div class="selector-musica">
+                <p class="texto-musica"><i class="fas fa-music"></i> Elige la musica de fondo:</p>
+                <div class="botones-musica">
+                    <!-- Cada boton reproduce un audio local desde la carpeta audio/ -->
+                    <button class="btn-musica" data-audio="audio/sientes-lo-que-siento.aac">
+                        <i class="fas fa-heart"></i> Sientes Lo Que Siento - Virlan Garcia
+                    </button>
+                    <button class="btn-musica" data-audio="audio/amor-de-cine.aac">
+                        <i class="fas fa-film"></i> Amor De Cine - Humbe
+                    </button>
+                    <button class="btn-musica" data-audio="audio/solo-tu.aac">
+                        <i class="fas fa-guitar"></i> Solo Tu - Calibre 50
+                    </button>
+                    <button class="btn-musica" data-audio="audio/noche-perfecta.aac">
+                        <i class="fas fa-moon"></i> Noche Perfecta - Calle 24 & Fuerza Regida
+                    </button>
+                    <button class="btn-musica" data-audio="noplay">
+                        <i class="fas fa-volume-mute"></i> Sin Musica
+                    </button>
+                </div>
+            </div>
+
+            <!-- Boton para comenzar la experiencia -->
+            <button id="btn-comenzar" class="btn-comenzar">
+                <i class="fas fa-heart"></i> Comenzar Nuestro Viaje <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 2: NAVEGACION FIJA (aparece al hacer scroll)         -->
+    <!-- ============================================================ -->
+    <nav id="navegacion" class="navegacion-oculta">
+        <div class="nav-contenedor">
+            <!-- MODIFICAR AQUI: Nombre que aparece en la barra de navegacion -->
+            <span class="nav-titulo">Para Mi Amor</span>
+            <div class="nav-links">
+                <a href="#inicio" class="nav-link">Inicio</a>
+                <a href="#carta" class="nav-link">Mi Carta</a>
+                <a href="#galeria" class="nav-link">Recuerdos</a>
+                <a href="#cosas-que-amo" class="nav-link">Cosas Que Amo</a>
+                <a href="#mensajes" class="nav-link">Pensamientos</a>
+                <a href="#pregunta" class="nav-link">Pregunta Especial</a>
+            </div>
+            <!-- Boton de musica flotante -->
+            <button id="btn-musica-nav" class="btn-musica-nav" aria-label="Abrir controles de música">
+                <i class="fas fa-music"></i>
+            </button>
+            <div id="music-menu" class="music-menu">
+                <div class="music-menu-header">
+                    <span>Controles de Música</span>
+                    <button id="btn-close-music-menu" class="music-menu-close" aria-label="Cerrar menú de música"><i class="fas fa-times"></i></button>
+                </div>
+                <p id="music-menu-track" class="music-menu-track">Selecciona una canción arriba</p>
+                <div class="music-menu-buttons">
+                    <button id="btn-back" class="music-control-btn" title="Retroceder 10 segundos"><i class="fas fa-backward"></i></button>
+                    <button id="btn-play-pause" class="music-control-btn" title="Reproducir / Pausar"><i class="fas fa-play"></i></button>
+                    <button id="btn-forward" class="music-control-btn" title="Cambiar canción"><i class="fas fa-forward"></i></button>
+                    <button id="btn-loop" class="music-control-btn" title="Activar bucle"><i class="fas fa-repeat"></i></button>
+                </div>
+                <div class="music-progress">
+                    <span id="music-current-time">0:00</span>
+                    <input id="music-seek-slider" type="range" min="0" max="100" value="0" step="1">
+                    <span id="music-duration">0:00</span>
+                </div>
+                <p class="music-menu-note">Usa el botón de la música para abrir o cerrar el panel.</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 3: INICIO - FRASE ROMANTICA + CONTADOR DE AMOR       -->
+    <!-- ============================================================ -->
+    <section id="inicio" class="seccion inicio-seccion">
+        <div class="contenedor">
+            <!-- Frase romantica inicial -->
+            <div class="frase-inicial">
+                <!-- MODIFICAR AQUI: Frase que aparece al entrar -->
+                <h2 class="frase-texto">"Desde que llegaste a mi vida, todo tiene mas color"</h2>
+                <p class="frase-autor">- Con todo mi amor</p>
+            </div>
+
+            <!-- Contador de tiempo juntos -->
+            <div class="contador-amor">
+                <h3 class="contador-titulo">Llevamos juntos:</h3>
+                <div class="contador-items">
+                    <div class="contador-item">
+                        <span id="dias" class="contador-numero">0</span>
+                        <span class="contador-label">Dias</span>
+                    </div>
+                    <div class="contador-item">
+                        <span id="horas" class="contador-numero">0</span>
+                        <span class="contador-label">Horas</span>
+                    </div>
+                    <div class="contador-item">
+                        <span id="minutos" class="contador-numero">0</span>
+                        <span class="contador-label">Minutos</span>
+                    </div>
+                    <div class="contador-item">
+                        <span id="segundos" class="contador-numero">0</span>
+                        <span class="contador-label">Segundos</span>
+                    </div>
+                </div>
+                <!-- MODIFICAR AQUI: Fecha cuando se conocieron o empezaron a salir -->
+                <p class="contador-desde">Desde el momento en que mi mundo cambio</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 4: CARTA DE AMOR CON EFECTO MAQUINA DE ESCRIBIR     -->
+    <!-- ============================================================ -->
+    <section id="carta" class="seccion carta-seccion">
+        <div class="contenedor">
+            <div class="carta-sobre">
+                <!-- Decoracion de sobre -->
+                <div class="sobre-decoracion">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+
+                <h2 class="seccion-titulo">Una Carta Para Ti</h2>
+
+                <!-- Mensaje introductorio antes de la carta -->
+                <div class="carta-intro" id="carta-intro">
+                    <div class="carta-intro-contenido">
+                        <i class="fas fa-pen-fancy carta-intro-icono"></i>
+                        <p class="carta-intro-texto">
+                            Se que mi letra no es la mejor y es por eso que te lo hice de esta forma, porque te quiero con todo mi corazon
+                        </p>
+                        <button id="btn-leer-carta" class="btn-leer-carta">
+                            <i class="fas fa-book-open"></i> Comenzar a Leer <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- La carta con efecto de escritura (inicialmente oculta) -->
+                <div class="carta-contenido" id="carta-contenido" style="display: none;">
+                    <div class="carta-papel">
+                        <!-- Este texto aparecera letra por letra como si lo estuvieras escribiendo -->
+                        <p id="texto-carta" class="texto-carta"></p>
+
+                        <!-- El texto completo esta escondido aqui para que JavaScript lo lea -->
+                        <span id="texto-carta-completo" style="display: none;">
+Mi amor,
+No sé bien por dónde empezar, porque cuando pienso en ti, las palabras se mezclan con todo lo que siento y me cuesta ordenarlas.
+Pero voy a intentarlo.
+Desde que te conocí, hay algo que cambió en mí. No lo puedo explicar con exactitud, solo sé que de repente el día tenía más color cuando sabía que te iba a ver, y que las conversaciones contigo eran las que más esperaba.
+He pensado mucho en nosotros. En los momentos que hemos vivido juntos, en cómo me miras, en tu sonrisa, en esa forma tuya de ser que me hace querer estar más cerca de ti siempre.
+No te voy a mentir: me pones nervioso. En el buen sentido. El tipo de nervios que te da algo que de verdad te importa.
+Y tú me importas.
+Mucho más de lo que puedas imaginar.
+Siento que desde que llegaste no haces más que mejorar mi vida. Los momentos juntos que tenemos, hasta las mini discusiones. También las veces que, mientras hacíamos nubecitas, nos reíamos de cosas sin sentido. La forma tan extraña en que congeniamos, la manera en que llegaste a mi vida solo para mejorarla.
+Ya sé que te lo he dicho, pero me encanta la forma en que me miras, la manera en que me abrazas, la forma en que nos damos tontos y muchas más cosas las cuales no puedo explicar.
+Sobre todo quiero agradecerte por hacerme sentir tan especial. Aunque no siempre encuentro las palabras justas, contigo quiero intentarlo. Es la primera vez que hago algo así y lo hice con todo mi amor para ti. Quiero agradecerte todos los momentos que vivimos juntos.
+Por eso escribí esto. Para que supieras todo lo que siento por ti, con letras y todo.
+Gracias por cada momento compartido. Gracias por dejarme robarte ese beso. Gracias por existir justo cuando yo lo necesitaba.
+Con todo lo que soy,
+Tuyo 💕
+                        </span>
+
+                        <!-- Cursor parpadeante al final de la carta -->
+                        <span id="cursor-carta" class="cursor-carta">|</span>
+                    </div>
+
+                    <!-- Firma de la carta -->
+                    <div class="carta-firma">
+                        <!-- MODIFICAR AQUI: Tu nombre -->
+                        <p>Con todo mi amor,</p>
+                        <p class="firma-nombre">Att:Max</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 5: GALERIA DE FOTOS - NUESTROS RECUERDOS (12 FOTOS)  -->
+    <!-- ============================================================ -->
+    <section id="galeria" class="seccion galeria-seccion">
+        <div class="contenedor">
+            <h2 class="seccion-titulo">Nuestros Momentos</h2>
+            <p class="seccion-subtitulo">son pocas las fotos pero cada una tiene un sentimiento especial y unico</p>
+
+            <!-- Galeria de fotos en formato masonry (12 espacios) -->
+            <div class="galeria-grid" id="galeria-grid">
+
+                <!-- MODIFICAR AQUI: Agrega tus 12 fotos -->
+                <!-- Cada "galeria-item" es una foto -->
+                <!-- src = ruta de la imagen (ej: "images/foto1.jpg") -->
+                <!-- data-caption = texto que aparece al pasar el mouse -->
+
+                <div class="galeria-item galeria-grande" data-caption="Ese momento justo antes del beso...">
+                    <img src="imagenes/img-caralinda.jpg.jpeg" alt="Recuerdo 1" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Ese momento justo antes del beso...</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="Cuando salimos y todo fue perfecto">
+                    <img src="imagenes/img-abrazo.jpg.jpeg" alt="Recuerdo 2" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Cuando salimos y todo fue perfecto</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="Tu sonrisa que me vuelve loco">
+                    <img src="imagenes/img-sonrisa.jpeg" alt="Recuerdo 3" onerror="this.src='https://images.unsplash.com/photo-1529333241880-0fc7855bb921?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Tu sonrisa que me vuelve loco</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="Un dia que nunca olvidare">
+                    <img src="imagenes/camisa.jpg.jpeg" alt="Recuerdo 4" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Un dia que nunca olvidare</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item galeria-grande" data-caption="Juntos, siempre juntos">
+                    <img src="imagenes/juntos.jpg.jpeg" alt="Recuerdo 5" onerror="this.src='https://images.unsplash.com/photo-1529333241880-0fc7855bb921?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Juntos, siempre juntos</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="Mi persona favorita en el mundo">
+                    <img src="imagenes/album.jpeg" alt="Recuerdo 6" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Mi persona favorita en el mundo</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="Risas sin sentido juntos">
+                    <img src="imagenes/ella.jpg.jpeg" alt="Recuerdo 7" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Risas sin sentido juntos</p>
+                    </div>
+                </div>
+
+                <div class="galeria-item" data-caption="La forma en que me miras">
+                    <img src="imagenes/su mirar.jpeg" alt="Recuerdo 8" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400'">
+                    <div class="galeria-overlay">
+                        <p>La forma en que me miras</p>
+                    </div>
+                </div>
+                <div class="galeria-item" data-caption="Los tontos que nos damos">
+                    <img src="imagenes/tonotos.jpeg" alt="Recuerdo 11" onerror="this.src='https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400'">
+                    <div class="galeria-overlay">
+                        <p>Los tonotos que nos damos aunque no tenga mucho que ver la foto </p>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 6: COSAS QUE AMO DE ELLA (TARJETAS GIRATORIAS)       -->
+    <!-- ============================================================ -->
+    <section id="cosas-que-amo" class="seccion cosas-amo-seccion">
+        <div class="contenedor">
+            <h2 class="seccion-titulo">Cosas Que Me Enamoran De Ti</h2>
+            <p class="seccion-subtitulo">Pequenos detalles que hacen que mi corazon se detenga</p>
+
+            <div class="tarjetas-grid">
+
+                <!-- MODIFICAR AQUI: Tarjetas de cosas que amas de ella -->
+                <!-- Cada tarjeta tiene frente (titulo) y reverso (descripcion) -->
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-eye"></i>
+                            <h3>Tus ojos</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>La forma en que me miras, como si en tus ojos yo fuera el unico hombre en el mundo. Esa mirada que me hace sentir invencible y vulnerable al mismo tiempo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-laugh-beam"></i>
+                            <h3>Tu Sonrisa</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>Esa sonrisa que ilumina cualquier habitacion. La que me hace olvidar todos mis problemas en un segundo. La sonrisa por la que haria cualquier cosa.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-heart"></i>
+                            <h3>Tu Forma De Ser</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>La manera en que me tratas con todo tu amor y respeto. la forma en la que me abrasas , la manera en que me tomas de la mano, simplemente todo .</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <h3>Tus Detalles</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>Esos pequenos gestos que nadie mas nota pero que a mi me hacen sentir el hombre mas afortunado del universo, las caras que haces cuando eres feliz , cuando estas emocionada ,todo eso me encanta de ti.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-star"></i>
+                            <h3>Tu Risa</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>Esa risa contagiosa que tienes cuando hacemos cosas juntos. Mi segundo sonido favorito en todo el mundo(primero tus gemidos)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-flip">
+                    <div class="tarjeta-inner">
+                        <div class="tarjeta-front">
+                            <i class="fas fa-moon"></i>
+                            <h3>Tu Compania</h3>
+                        </div>
+                        <div class="tarjeta-back">
+                            <p>El silencio comodo, las conversaciones profundas, todo lo que hacemos juntos. Todo es mejor cuando estas a mi lado , cuando simplemente nos acostamos sin hacer nada .</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 7: MENSAJES Y PENSAMIENTOS (LINEA DE TIEMPO)         -->
+    <!-- ============================================================ -->
+    <section id="mensajes" class="seccion mensajes-seccion">
+        <div class="contenedor">
+            <h2 class="seccion-titulo">Pensamientos Que He Tenido Contigo</h2>
+            <p class="seccion-subtitulo">Mensajes de mi corazon para el tuyo</p>
+
+            <div class="linea-tiempo">
+
+                <!-- MODIFICAR AQUI: Mensajes/pensamientos con fecha y foto -->
+                <!-- Cada item es un mensaje con fecha, contenido y foto opcional -->
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> la primera ves que cambiamos de camisas 
+                        <span class="tiempo-fecha-real">25 de marzo, 2026</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"y pensar que todo fue por una invitacion sin sentido."</p>
+                        <!-- MODIFICAR AQUI: Agrega una foto a este momento -->
+                        <div class="tiempo-foto">
+                            <img src="imagenes/cambio.png.jpeg" alt="Primer dia" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> Nuestra Primera Salida
+                        <span class="tiempo-fecha-real">23 de marzo, 2026</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"Nunca pense que una simple salida pudiera convertirse en el mejor dia de mi vida. Contigo todo es diferente."</p>
+                        <div class="tiempo-foto">
+                            <img src="imagenes/salida.jpeg" alt="Primera salida" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> Ese Beso,nuestro primer beso ...
+                        <span class="tiempo-fecha-real">27 de marzo, 2026</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"El mundo se detuvo por un segundo. O quizas fueron horas. El tiempo pierde sentido cuando estoy contigo."</p>
+                        <div class="tiempo-foto">
+                            <img src="imagenes/primer.jpg.jpeg" alt="Ese beso" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> Haciendo Nubecitas
+                        <span class="tiempo-fecha-real">14 de Febrero, 2026</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"Las veces que mientras haciamos nubecitas nos reiamos de cosas sin sentido, te voy a ahorcar mas seguido."</p>
+                        <div class="tiempo-foto">
+                            <img src="imagenes/tonotos.jpeg" alt="Nubecitas" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> Cada Manana
+                        <span class="tiempo-fecha-real">Todos los dias</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"Despertar y pensar en ti es la mejor parte de mi dia. Eres mi primera sonrisa cada manana."</p>
+                        <div class="tiempo-foto">
+                            <img src="imagenes/mañanas.jpeg" alt="Cada manana" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tiempo-item">
+                    <div class="tiempo-fecha">
+                        <i class="fas fa-calendar-alt"></i> Ahora Mismo
+                        <span class="tiempo-fecha-real">Hoy</span>
+                    </div>
+                    <div class="tiempo-contenido">
+                        <p>"Mientras creo esto para ti, no puedo evitar sonreir. Eres lo mejor que me ha pasado, y quiero que lo sepas cada dia."</p>
+                        <div class="tiempo-foto">
+                            <img src="images/tiempo6.jpg" alt="Ahora" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGREGAR MAS MENSAJES: Copia y pega el bloque de arriba -->
+                <!-- Cambia la fecha, el texto y la ruta de la foto -->
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 8: PREGUNTA ESPECIAL (EL MOMENTO MAS IMPORTANTE)     -->
+    <!-- ============================================================ -->
+    <section id="pregunta" class="seccion pregunta-seccion">
+        <div class="contenedor">
+            <div class="pregunta-contenedor">
+                <!-- Corazones animados -->
+                <div class="corazones-explosion" id="corazones-explosion"></div>
+
+                <h2 class="pregunta-titulo">Y ahora, lo mas importante...</h2>
+
+                <div class="pregunta-caja">
+                    <i class="fas fa-heart pregunta-icono"></i>
+                    <!-- MODIFICAR AQUI: La pregunta que quieres hacer -->
+                    <h3 class="pregunta-texto">Quieres ser mi novia oficialmente?</h3>
+                    <p class="pregunta-sub">(Aunque para mi ya lo eres desde hace tiempo)</p>
+
+                    <div class="pregunta-botones">
+                        <button id="btn-si" class="btn-respuesta btn-si">
+                            <i class="fas fa-heart"></i> Si, mil veces si! <i class="fas fa-heart"></i>
+                        </button>
+                        <button id="btn-no" class="btn-respuesta btn-no">
+                            <i class="fas fa-times"></i> No
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mensaje de respuesta (aparece al dar clic en Si) -->
+                <div id="respuesta-mensaje" class="respuesta-mensaje">
+                    <div class="respuesta-fuegos"></div>
+                    <h3>Sabia que dirias que si!</h3>
+                    <p>Prometo hacerte la persona mas feliz del mundo. Este es solo el comienzo de nuestra historia.</p>
+                    <p class="respuesta-firma">Te amo mas de lo que las palabras pueden expresar.</p>
+
+                    <div id="cupones-contenedor" class="cupones-contenedor">
+                        <p class="cupones-intro">Como 3 regalo, aqui tienes 3 cupones validos para cualquier cosa. Descargalos uno por uno; cada cupón se puede usar solo una vez.</p>
+                        <div class="cupones-grid">
+                            <div class="cupon-card">
+                                <button class="btn-descargar-cupon" data-cupon-src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM.jpeg" data-cupon-num="1">Descargar Cupón 1</button>
+                                <img src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM.jpeg" alt="Cupón 1">
+                                <span class="cupon-numero">Cupón 1</span>
+                            </div>
+                            <div class="cupon-card">
+                                <button class="btn-descargar-cupon" data-cupon-src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM (1).jpeg" data-cupon-num="2">Descargar Cupón 2</button>
+                                <img src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM (1).jpeg" alt="Cupón 2">
+                                <span class="cupon-numero">Cupón 2</span>
+                            </div>
+                            <div class="cupon-card">
+                                <button class="btn-descargar-cupon" data-cupon-src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM (2).jpeg" data-cupon-num="3">Descargar Cupón 3</button>
+                                <img src="imagenes-cupones/WhatsApp Image 2026-06-18 at 3.59.20 PM (2).jpeg" alt="Cupón 3">
+                                <span class="cupon-numero">Cupón 3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCION 9: PIE DE PAGINA                                     -->
+    <!-- ============================================================ -->
+    <footer class="pie-pagina">
+        <div class="contenedor">
+            <p class="pie-texto">
+                <!-- MODIFICAR AQUI: Mensaje final -->
+                Hecho con amor para la persona mas especial de mi vida
+            </p>
+            <p class="pie-firma">Para siempre tuyo/a</p>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- REPRODUCTOR DE MUSICA OCULTO -->
+    <!-- Se utiliza el audio local desde la carpeta audio/ -->
+    <div id="reproductor-musica" style="display: none;">
+        <audio id="audio-player" preload="none"></audio>
+        <iframe id="iframe-musica" width="0" height="0" frameborder="0" allow="autoplay"></iframe>
+    </div>
+
+    <!-- Conexion con el archivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
